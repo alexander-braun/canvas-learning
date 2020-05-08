@@ -107,15 +107,15 @@ let mouse = {
     y: undefined
 }
 
-const maxRadius = 50
+const maxRadius = 5
 const minRadius = 0
 
 const colorArr = [
-    '#D9961A',
-    '#BF6B04',
-    '#A64F03',
-    '#731702',
-    '#260101'
+    '#F2E635',
+    '#4A44F2',
+    '#3726A6',
+    '#F2BE22',
+    '#F20505'
 ]
 
 window.addEventListener('mousemove', (e) => {
@@ -142,6 +142,7 @@ class Circle {
         this.draw = () => {
             c.beginPath()
             c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+            var gradient = c.createLinearGradient(20,0, 220,0);
             c.fillStyle = this.color
             c.fill()
         }
@@ -174,7 +175,7 @@ class Circle {
 let circleArr = []
 function init() {
     circleArr = []
-    for(let i = 0; i < 800; i++) {
+    for(let i = 0; i < 1000; i++) {
         let radius = Math.ceil(Math.random() * 15 + 1)
         let x = Math.random() * (innerWidth - radius * 2) + radius
         let y = Math.random() * (innerHeight -radius * 2) + radius
