@@ -102,48 +102,68 @@ let dy = (Math.random() - 0.5) * 50
 let radius = 30
 */
 
-function Circle(x, y, dx, dy, radius) {
-    this.x = x
-    this.y = y
-    this.dx = dx
-    this.dy = dy
-    this.radius = radius
-
-    this.draw = function() {
-        c.beginPath()
-        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-        c.strokeStyle = 'blue'
-        c.stroke()
-        c.fill()
-    }
-
-    this.update = function() {
-        if(this.x + this.radius > innerWidth || this.x - this.radius < 0) {
-            this.dx = -this.dx
-        }
-    
-        if(this.y + this.radius > innerHeight || this.y - this.radius < 0) {
-            this.dy = -this.dy
-        }
-    
-        this.x += this.dx
-        this.y += -this.dy
-
-        this.draw()
-    }
-} 
-
-let circleArr = []
-for(let i = 0; i < 100; i++) {
-    let x = Math.random() * innerWidth
-    let y = Math.random() * innerHeight
-    let dx = (Math.random() - 0.5) * 50
-    let dy = (Math.random() - 0.5) * 50   
-    let radius = 50
-    circleArr.push(new Circle(x, y, dx, dy, radius))
+let mouse = {
+    x: undefined,
+    y: undefined
 }
 
+const maxRadius = 40
+const minRadius = 0
 
+window.addEventListener('mousemove', (e) => {
+    mouse.x = event.x
+    mouse.y = event.y
+})
+
+class Circle {
+    constructor(x, y, dx, dy, radius) {
+        this.x = x
+        this.y = y
+        this.dx = dx
+        this.dy = dy
+        this.radius = radius
+
+        this.draw = () => {
+            c.beginPath()
+            c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+            c.strokeStyle = 'transparent'
+            c.stroke()
+            c.fill()
+        }
+
+        this.update = () => {
+            if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
+                this.dx = -this.dx
+            }
+            if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
+                this.dy = -this.dy
+            }
+            this.x += this.dx
+            this.y += -this.dy
+
+            if(mouse.x - this.x < 50 && mouse.x - this.x > -50 &&
+                mouse.y - this.y < 50 && mouse.y - this.y > -50) {
+                if(this.radius < maxRadius) {
+                    this.radius += 1    
+                }
+            } else if(this.radius > minRadius) {
+                    this.radius -= 1
+            }
+
+            this.draw()
+        }
+    }
+}
+
+let circleArr = []
+for(let i = 0; i < 300; i++) {
+    let radius = 3
+    let x = Math.random() * (innerWidth - radius * 2) + radius
+    let y = Math.random() * (innerHeight -radius * 2) + radius
+    let dx = (Math.random() - 0.5) * 10
+    let dy = (Math.random() - 0.5) * 10   
+    circleArr.push(new Circle(x, y, dx, dy, radius))
+}
 
 
 const animate = () => {
